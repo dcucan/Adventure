@@ -32,7 +32,7 @@ public class Game {
 
 
     public String getWelcomeMessage() {
-        return "Welcome to the game, your current place is " + currentPlace.getName();
+        return "Welcome to game, your current place is " + currentPlace.getName();
     }
 
     public String getGoodbyeMessage() {
