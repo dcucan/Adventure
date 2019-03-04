@@ -10,7 +10,7 @@ public class SceneController {
     private TextField textField;
 
     public void onButtonClick(){
-        System.out.println("Klik");
-        textField.setText("HelloWorld");
+        System.out.println(textField.getText());
+
     }
 }
