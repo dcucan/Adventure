@@ -25,9 +25,9 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
   </rowConstraints>
    <children>
-      <ImageView fitHeight="164.0" fitWidth="292.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-      <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
-      <ListView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <ImageView fitHeight="164.0" fitWidth="301.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
+      <ListView fx:id="listView1" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
+      <ListView fx:id="listView2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <MenuBar GridPane.columnSpan="2147483647" GridPane.vgrow="NEVER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
