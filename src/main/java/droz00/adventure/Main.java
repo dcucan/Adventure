@@ -21,8 +21,6 @@ public class Main extends Application {
             }
         } else {
 
-            //TerminalGUI terminalGUI = new TerminalGUI();
-            //terminalGUI.play();
             launch(args);
 
         }

@@ -6,8 +6,8 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -25,14 +25,14 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
   </rowConstraints>
    <children>
-      <ImageView fitHeight="164.0" fitWidth="301.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
       <ListView fx:id="listView1" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
       <ListView fx:id="listView2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <MenuBar GridPane.columnSpan="2147483647" GridPane.vgrow="NEVER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewGame" text="New game" />
+              <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -55,7 +55,7 @@
       </MenuBar>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
          <children>
-            <TextField fx:id="textField" HBox.hgrow="ALWAYS">
+            <TextField fx:id="textField" onAction="#onTextFieldAction" HBox.hgrow="ALWAYS">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -66,5 +66,7 @@
             <Button mnemonicParsing="false" onAction="#onButtonClick" text="Button" />
          </children>
       </HBox>
+      <HBox prefHeight="45.0" prefWidth="300.0" GridPane.rowIndex="1" />
+      <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
    </children>
 </GridPane>
