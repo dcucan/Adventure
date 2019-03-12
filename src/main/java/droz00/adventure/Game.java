@@ -20,16 +20,20 @@ public class Game {
     private PlaceManager placeManager;
     private Place currentPlace;
     private Clipboard clipboard;
+    private Observable roomChanges;
 
     public Game() {
+        roomChanges = new Observable();
         isOver = false;
         isWon = false;
         commandMap = new CommandManager(this);
         placeManager = new PlaceManager(this);
         clipboard = new Clipboard(this);
-
     }
 
+    public void onRoomChange(Runnable callback) {
+        roomChanges.subscribe(callback);
+    }
 
     public String getWelcomeMessage() {
         return "Welcome to game, your current place is " + currentPlace.getName();
@@ -91,6 +95,8 @@ public class Game {
 
     public void setCurrentPlace(Place place) {
         currentPlace = place;
+
+        roomChanges.notifySubscribers();
     }
 
     public Place getCurrentPlace() {
