@@ -48,6 +48,7 @@ public class CommandCut extends Command {
                 stringBuilder.append("File " + fileName + " not found");
             }
         }
+        game.getCut().notifySubscribers();
         return stringBuilder.toString().substring(1);
     }
 

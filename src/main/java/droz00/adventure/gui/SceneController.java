@@ -6,10 +6,7 @@ import droz00.adventure.places.Place;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -30,6 +27,12 @@ public class SceneController implements Initializable {
     @FXML
     private ListView<String> listView1;
 
+    @FXML
+    private Label label;
+
+    @FXML
+    private ListView<String> listView2;
+
 
     @FXML
     private Image imageF = new Image("/image/folder.png");
@@ -38,25 +41,33 @@ public class SceneController implements Initializable {
     private Image imageChrome = new Image("/image/chrome.png");
     private Image imageMacos = new Image("/image/macos.png");
     private Image imageWindows = new Image("/image/windows.png");
-    private Image[] listOfImages = {imageF, imageSafari, imageFinder, imageChrome, imageMacos, imageWindows};
+    private Image imageFile = new Image("/image/file.png");
+    private Image[] listOfImages = {imageF, imageSafari, imageFinder, imageChrome, imageMacos, imageWindows, imageFile};
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         game = new Game();
+
+
         textArea.setText(game.getWelcomeMessage());
 
-        game.onRoomChange(() -> {
-            System.out.println("room change");
-        });
         game.onRoomChange(this::onRoomChange);
         game.onAddNeighbor(this::onRoomChange);
         game.onRmDirNeighbor(this::onRoomChange);
+        game.onCut(this::onRoomChange);
+        game.onPaste(this::onRoomChange);
+        game.onCurrentPlaceObs(this::onPlaceChange);
+        label.setText( "Files in " + game.getCurrentPlace().getName());
         listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
+        listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
 
         setImage();
 
     }
+
+
+
 
     public void setImage() {
         listView1.setCellFactory(param -> new ListCell<String>() {
@@ -79,8 +90,11 @@ public class SceneController implements Initializable {
                         imageView.setImage(listOfImages[4]);
                     else if (name.equals("windows"))
                         imageView.setImage(listOfImages[5]);
+                    else if (name.contains(".jpg"))
+                        imageView.setImage(listOfImages[6]);
                     else if (name.length() > 1)
                         imageView.setImage(listOfImages[0]);
+
                     setText(name);
                     setGraphic(imageView);
                 }
@@ -90,9 +104,16 @@ public class SceneController implements Initializable {
 
     }
 
+    public void onPlaceChange(){
+        label.setText( "Files in " + game.getCurrentPlace().getName());
+    }
+
     public void onRoomChange() {
         listView1.getItems().clear();
         listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
+        listView1.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
+        listView2.getItems().clear();
+        listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
     }
 
 
@@ -118,15 +139,19 @@ public class SceneController implements Initializable {
 
     public void onNewGame() {
         game = new Game();
+
+
         textArea.setText(game.getWelcomeMessage());
-        listView1.getItems().clear();
-        game.onRoomChange(() -> {
-            System.out.println("room change");
-        });
+
         game.onRoomChange(this::onRoomChange);
         game.onAddNeighbor(this::onRoomChange);
         game.onRmDirNeighbor(this::onRoomChange);
+        game.onCut(this::onRoomChange);
+        game.onPaste(this::onRoomChange);
+        game.onCurrentPlaceObs(this::onPlaceChange);
+        label.setText( "Files in " + game.getCurrentPlace().getName());
         listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
+        listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
 
         setImage();
     }
@@ -160,4 +185,10 @@ public class SceneController implements Initializable {
         String output = game.processCommand("ls");
         textArea.setText(output);
     }
+
+    public void onShowClipboard(){
+        String output = game.processCommand("clipboard");
+        textArea.setText(output);
+    }
+
 }

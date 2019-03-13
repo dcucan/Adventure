@@ -23,17 +23,35 @@ public class Game {
     private Observable roomChanges;
     private Observable mkDirNeighbor;
     private Observable rmDirNeighbor;
+    private Observable cut;
+    private Observable paste;
+    private Observable currentPlaceObs;
 
 
     public Game() {
         roomChanges = new Observable();
         mkDirNeighbor = new Observable();
         rmDirNeighbor = new Observable();
+        cut = new Observable();
+        paste = new Observable();
+        currentPlaceObs = new Observable();
         isOver = false;
         isWon = false;
         commandMap = new CommandManager(this);
         placeManager = new PlaceManager(this);
         clipboard = new Clipboard(this);
+    }
+
+    public void onCurrentPlaceObs(Runnable callback){
+        currentPlaceObs.subscribe(callback);
+    }
+
+    public void onPaste(Runnable callback){
+        paste.subscribe(callback);
+    }
+
+    public void onCut(Runnable callback){
+        cut.subscribe(callback);
     }
 
     public void onAddNeighbor(Runnable callback){
@@ -108,6 +126,7 @@ public class Game {
 
     public void setCurrentPlace(Place place) {
         currentPlace = place;
+        currentPlaceObs.notifySubscribers();
     }
 
     public Place getCurrentPlace() {
@@ -131,6 +150,10 @@ public class Game {
     public Observable getRoomChanges(){return roomChanges;}
 
     public Observable getRmDirNeighbor(){return rmDirNeighbor;}
+
+    public Observable getCut(){return cut;}
+
+    public Observable getPaste(){return paste;}
 
 
 }

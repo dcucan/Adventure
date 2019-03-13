@@ -35,6 +35,8 @@ public class CommandPaste extends Command {
             }
 
         }
+
+        game.getPaste().notifySubscribers();
         return stringBuilder.toString().substring(1);
     }
 
