@@ -1,6 +1,5 @@
 package droz00.adventure;
 
-import droz00.adventure.gui.SceneController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,7 +29,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/scene.fxml"));
-        Scene scene = new Scene(root, 1280, 720);
+        Scene scene = new Scene(root, 720, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

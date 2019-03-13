@@ -8,6 +8,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -25,8 +27,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
   </rowConstraints>
    <children>
-      <ListView fx:id="listView1" onMouseClicked="#clickOnDirectory" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
-      <ListView fx:id="listView2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <ListView fx:id="listView1" onMouseClicked="#clickOnDirectory" prefHeight="170.0" prefWidth="122.0" GridPane.rowIndex="2" />
       <MenuBar GridPane.columnSpan="2147483647" GridPane.vgrow="NEVER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
@@ -66,7 +67,14 @@
             <Button mnemonicParsing="false" onAction="#onButtonClick" text="Button" />
          </children>
       </HBox>
-      <HBox prefHeight="45.0" prefWidth="300.0" GridPane.rowIndex="1" />
-      <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <HBox prefHeight="45.0" prefWidth="300.0" GridPane.rowIndex="1">
+         <children>
+            <ImageView fx:id="imgFolder" fitHeight="65.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@folder.png" />
+               </image>
+            </ImageView>
+         </children></HBox>
+      <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
 </GridPane>
