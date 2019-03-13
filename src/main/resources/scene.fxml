@@ -8,8 +8,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -33,6 +31,8 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#onNewGame" text="New game" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewDirectory" text="New directory" />
+                  <MenuItem mnemonicParsing="false" onAction="#onShowFiles" text="Show files" />
               <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close" />
             </items>
           </Menu>
@@ -67,14 +67,6 @@
             <Button mnemonicParsing="false" onAction="#onButtonClick" text="Button" />
          </children>
       </HBox>
-      <HBox prefHeight="45.0" prefWidth="300.0" GridPane.rowIndex="1">
-         <children>
-            <ImageView fx:id="imgFolder" fitHeight="65.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@folder.png" />
-               </image>
-            </ImageView>
-         </children></HBox>
       <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
 </GridPane>

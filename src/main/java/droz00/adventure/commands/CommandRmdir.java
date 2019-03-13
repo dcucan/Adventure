@@ -43,7 +43,7 @@ public class CommandRmdir extends Command {
 
         game.getCurrentPlace().removeNeighbor(neighborName);
         neighbor.removeNeighbor(game.getCurrentPlace().getName());
-
+        game.getRmDirNeighbor().notifySubscribers();
         return "Directory successfully removed";
     }
 }

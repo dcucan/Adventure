@@ -41,7 +41,7 @@ public class CommandMkdir extends Command {
         // register new place
         game.getPlaceManager().registerPlace(place);
         game.getPlaceManager().setNeighbors(place, game.getCurrentPlace());
-
+        game.getMkDirNeighbor().notifySubscribers();
         return SUCCESS_MESSAGE;
     }
 }

@@ -1,5 +1,6 @@
 package droz00.adventure.places;
 
+import droz00.adventure.Observable;
 import droz00.adventure.files.File;
 
 import java.util.HashMap;
@@ -18,12 +19,15 @@ public class Place {
     private String description;
     private Map<String, File> filesInDirectory;
 
+
     public Place(String name, String description) {
+
         this.name = name;
         this.description = description;
         neighbors = new HashMap<>();
         filesInDirectory = new HashMap<>();
     }
+
 
     /**
      * Checks if place has a certain file

@@ -2,6 +2,7 @@ package droz00.adventure.gui;
 
 
 import droz00.adventure.Game;
+import droz00.adventure.places.Place;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +19,7 @@ import java.util.ResourceBundle;
 public class SceneController implements Initializable {
 
     private Game game;
+
 
     @FXML
     private TextField textField;
@@ -47,9 +49,9 @@ public class SceneController implements Initializable {
         game.onRoomChange(() -> {
             System.out.println("room change");
         });
-
         game.onRoomChange(this::onRoomChange);
-
+        game.onAddNeighbor(this::onRoomChange);
+        game.onRmDirNeighbor(this::onRoomChange);
         listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
 
         setImage();
@@ -89,14 +91,8 @@ public class SceneController implements Initializable {
     }
 
     public void onRoomChange() {
-        game.getCurrentPlace().getNeighbors().forEach((i, place) -> {
-            System.out.println(place.getName());
-
-            listView1.getItems().clear();
-            listView1.getItems().add(place.getName());
-        });
-
-
+        listView1.getItems().clear();
+        listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
     }
 
 
@@ -123,13 +119,13 @@ public class SceneController implements Initializable {
     public void onNewGame() {
         game = new Game();
         textArea.setText(game.getWelcomeMessage());
-
+        listView1.getItems().clear();
         game.onRoomChange(() -> {
             System.out.println("room change");
         });
-
         game.onRoomChange(this::onRoomChange);
-
+        game.onAddNeighbor(this::onRoomChange);
+        game.onRmDirNeighbor(this::onRoomChange);
         listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
 
         setImage();
@@ -154,5 +150,14 @@ public class SceneController implements Initializable {
             textArea.appendText("\n" + output);
         }
 
+    }
+
+    public void onNewDirectory(){
+        game.processCommand("mkdir new_directory");
+    }
+
+    public void onShowFiles(){
+        String output = game.processCommand("ls");
+        textArea.setText(output);
     }
 }

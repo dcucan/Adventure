@@ -21,9 +21,14 @@ public class Game {
     private Place currentPlace;
     private Clipboard clipboard;
     private Observable roomChanges;
+    private Observable mkDirNeighbor;
+    private Observable rmDirNeighbor;
+
 
     public Game() {
         roomChanges = new Observable();
+        mkDirNeighbor = new Observable();
+        rmDirNeighbor = new Observable();
         isOver = false;
         isWon = false;
         commandMap = new CommandManager(this);
@@ -31,10 +36,18 @@ public class Game {
         clipboard = new Clipboard(this);
     }
 
+    public void onAddNeighbor(Runnable callback){
+        mkDirNeighbor.subscribe(callback);
+    }
+
     public void onRoomChange(Runnable callback) {
+
         roomChanges.subscribe(callback);
     }
 
+    public void onRmDirNeighbor(Runnable callback){
+        rmDirNeighbor.subscribe(callback);
+    }
     public String getWelcomeMessage() {
         return "Welcome to game, your current place is " + currentPlace.getName();
     }
@@ -95,8 +108,6 @@ public class Game {
 
     public void setCurrentPlace(Place place) {
         currentPlace = place;
-
-        roomChanges.notifySubscribers();
     }
 
     public Place getCurrentPlace() {
@@ -114,6 +125,12 @@ public class Game {
     public PlaceManager getPlaceManager() {
         return placeManager;
     }
+
+    public Observable getMkDirNeighbor(){ return mkDirNeighbor;}
+
+    public Observable getRoomChanges(){return roomChanges;}
+
+    public Observable getRmDirNeighbor(){return rmDirNeighbor;}
 
 
 }

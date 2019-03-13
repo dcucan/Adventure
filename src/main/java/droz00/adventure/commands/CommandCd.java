@@ -33,6 +33,7 @@ public class CommandCd extends Command {
                 return "Unknown directory";
             }
             game.setCurrentPlace(place);
+            game.getRoomChanges().notifySubscribers();
             return "Changed to " + place.getName();
         }
 
