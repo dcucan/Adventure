@@ -20,7 +20,7 @@ public class Clipboard {
         this.game = game;
         fileMap = new HashMap<>();
         // Number of max files in the clipboard
-        maxFiles = 1;
+        maxFiles = 5;
 
     }
 

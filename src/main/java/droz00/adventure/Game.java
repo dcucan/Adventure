@@ -7,6 +7,8 @@ import droz00.adventure.files.Clipboard;
 import droz00.adventure.places.Place;
 import droz00.adventure.places.PlaceManager;
 
+import java.util.ArrayList;
+
 /**
  * Main class of the game, its an input and output of the game
  * All is set here
@@ -26,6 +28,7 @@ public class Game {
     private Observable cut;
     private Observable paste;
     private Observable currentPlaceObs;
+    private ArrayList<String> previousPlaces;
 
 
     public Game() {
@@ -40,21 +43,23 @@ public class Game {
         commandMap = new CommandManager(this);
         placeManager = new PlaceManager(this);
         clipboard = new Clipboard(this);
+        previousPlaces = new ArrayList<>();
+        previousPlaces.add("macos");
     }
 
-    public void onCurrentPlaceObs(Runnable callback){
+    public void onCurrentPlaceObs(Runnable callback) {
         currentPlaceObs.subscribe(callback);
     }
 
-    public void onPaste(Runnable callback){
+    public void onPaste(Runnable callback) {
         paste.subscribe(callback);
     }
 
-    public void onCut(Runnable callback){
+    public void onCut(Runnable callback) {
         cut.subscribe(callback);
     }
 
-    public void onAddNeighbor(Runnable callback){
+    public void onAddNeighbor(Runnable callback) {
         mkDirNeighbor.subscribe(callback);
     }
 
@@ -63,9 +68,10 @@ public class Game {
         roomChanges.subscribe(callback);
     }
 
-    public void onRmDirNeighbor(Runnable callback){
+    public void onRmDirNeighbor(Runnable callback) {
         rmDirNeighbor.subscribe(callback);
     }
+
     public String getWelcomeMessage() {
         return "Welcome to game, your current place is " + currentPlace.getName();
     }
@@ -110,6 +116,8 @@ public class Game {
      *
      * @return
      */
+
+
     public boolean isOver() {
         return isOver;
     }
@@ -127,7 +135,9 @@ public class Game {
     public void setCurrentPlace(Place place) {
         currentPlace = place;
         currentPlaceObs.notifySubscribers();
+
     }
+
 
     public Place getCurrentPlace() {
         return currentPlace;
@@ -141,19 +151,38 @@ public class Game {
         return clipboard;
     }
 
+    public ArrayList<String> getPreviousPlaces() {
+        return previousPlaces;
+    }
+
+    public String getPreviousPlace() {
+        previousPlaces.remove((previousPlaces.size() - 1));
+        return previousPlaces.remove((previousPlaces.size() - 1));
+    }
+
     public PlaceManager getPlaceManager() {
         return placeManager;
     }
 
-    public Observable getMkDirNeighbor(){ return mkDirNeighbor;}
+    public Observable getMkDirNeighbor() {
+        return mkDirNeighbor;
+    }
 
-    public Observable getRoomChanges(){return roomChanges;}
+    public Observable getRoomChanges() {
+        return roomChanges;
+    }
 
-    public Observable getRmDirNeighbor(){return rmDirNeighbor;}
+    public Observable getRmDirNeighbor() {
+        return rmDirNeighbor;
+    }
 
-    public Observable getCut(){return cut;}
+    public Observable getCut() {
+        return cut;
+    }
 
-    public Observable getPaste(){return paste;}
+    public Observable getPaste() {
+        return paste;
+    }
 
 
 }

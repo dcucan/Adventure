@@ -56,8 +56,6 @@ public class SceneController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         game = new Game();
-
-
         textArea.setText(game.getWelcomeMessage());
 
         game.onRoomChange(this::onRoomChange);
@@ -145,6 +143,7 @@ public class SceneController implements Initializable {
 
     public void onNewGame() {
         game = new Game();
+
 
 
         textArea.setText(game.getWelcomeMessage());
@@ -288,17 +287,34 @@ public class SceneController implements Initializable {
 
     public void onShowFiles() {
         String output = game.processCommand("ls");
-        textArea.setText(output);
+        textArea.appendText("\n"+output);
     }
 
     public void onShowClipboard() {
         String output = game.processCommand("clipboard");
         textArea.setText(output);
+
+    }
+
+    public void onUndo(){
+        if (game.getPreviousPlaces().size()>1) {
+            String place = game.getPreviousPlace();
+            game.processCommand("cd " + place);
+
+            System.out.println(game.getPreviousPlaces());
+            textArea.appendText("\nBack to "+ place);
+        } else {
+            textArea.appendText("\nNo more undo");
+            System.out.println(game.getPreviousPlaces());
+        }
+
     }
 
     public void onCheckBrowser(){
         String output = game.processCommand("check");
-        textArea.setText(output);
+        textArea.appendText("\n"+output);
     }
+
+
 
 }

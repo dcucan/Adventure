@@ -29,9 +29,12 @@ public class CommandCd extends Command {
             return getDescription();
         } else if (parameters.length == 1) {
             Place place = game.getCurrentPlace().getNeighbor(parameters[0]);
+            String placeS = parameters[0];
             if (place == null) {
                 return "Unknown directory";
             }
+
+            game.getPreviousPlaces().add(placeS);
             game.setCurrentPlace(place);
             game.getRoomChanges().notifySubscribers();
             return "Changed to " + place.getName();
