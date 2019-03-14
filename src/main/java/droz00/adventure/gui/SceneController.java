@@ -2,13 +2,18 @@ package droz00.adventure.gui;
 
 
 import droz00.adventure.Game;
-import droz00.adventure.places.Place;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,6 +37,9 @@ public class SceneController implements Initializable {
 
     @FXML
     private ListView<String> listView2;
+
+    @FXML
+    private WebView html;
 
 
     @FXML
@@ -58,15 +66,13 @@ public class SceneController implements Initializable {
         game.onCut(this::onRoomChange);
         game.onPaste(this::onRoomChange);
         game.onCurrentPlaceObs(this::onPlaceChange);
-        label.setText( "Files in " + game.getCurrentPlace().getName());
+        label.setText("Files in " + game.getCurrentPlace().getName());
         listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
         listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
 
         setImage();
 
     }
-
-
 
 
     public void setImage() {
@@ -104,8 +110,8 @@ public class SceneController implements Initializable {
 
     }
 
-    public void onPlaceChange(){
-        label.setText( "Files in " + game.getCurrentPlace().getName());
+    public void onPlaceChange() {
+        label.setText("Files in " + game.getCurrentPlace().getName());
     }
 
     public void onRoomChange() {
@@ -149,7 +155,7 @@ public class SceneController implements Initializable {
         game.onCut(this::onRoomChange);
         game.onPaste(this::onRoomChange);
         game.onCurrentPlaceObs(this::onPlaceChange);
-        label.setText( "Files in " + game.getCurrentPlace().getName());
+        label.setText("Files in " + game.getCurrentPlace().getName());
         listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
         listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
 
@@ -161,8 +167,50 @@ public class SceneController implements Initializable {
     }
 
     public void onHelp() {
-        String output = game.processCommand("help");
-        textArea.setText(output);
+
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("About");
+            Scene scene = new Scene(new Group());
+
+            VBox root = new VBox();
+            html = new WebView();
+            WebEngine webEngine = html.getEngine();
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setContent(html);
+            webEngine.loadContent("\n" +
+                    "<h1 style=\"text-align: center;\">MacHack</h1>\n" +
+                    "<blockquote>\n" +
+                    "    <p style=\"text-align: justify;\">You have installed Windows to your computer, " +
+                    "that unfortunately changed your internet browser to Safe Finder instead of Google, " +
+                    "which is annoying. Try to change it back to Google using following commands:</p>\n" +
+                    "</blockquote>\n" +
+                    "<ul>\n" +
+                    "    <li>cd</li>\n" +
+                    "    <li>exit</li>\n" +
+                    "    <li>help</li>\n" +
+                    "    <li>cut</li>\n" +
+                    "    <li>ls</li>\n" +
+                    "    <li>paste</li>\n" +
+                    "    <li>check</li>\n" +
+                    "    <li>rmdir</li>\n" +
+                    "    <li>mkdir</li>\n" +
+                    "    <li>clipboard</li>\n" +
+                    "</ul>\n" +
+                    "<p style=\"text-align: center;\">Type help + name of command to see its description</p>");
+
+            root.getChildren().addAll(scrollPane);
+            scene.setRoot(root);
+
+            stage.setScene(scene);
+
+            stage.show();
+        } catch (Exception e) {
+            System.out.println("Cant load the page");
+        }
+
     }
 
 
@@ -173,21 +221,83 @@ public class SceneController implements Initializable {
             String input = listView1.getSelectionModel().getSelectedItem();
             String output = game.processCommand("cd " + input);
             textArea.appendText("\n" + output);
+            if(input.equals("safari")){
+
+                try {
+                    Stage stage = new Stage();
+                    stage.setTitle("Safari");
+                    WebView browser = new WebView();
+                    WebEngine webEngine = browser.getEngine();
+                    webEngine.load("https://www.google.com");
+                    VBox root = new VBox();
+                    root.getChildren().addAll(browser);
+
+                    Scene scene = new Scene(root, 800, 500);
+                    stage.setScene(scene);
+
+                    stage.show();
+                } catch (Exception e){
+                    System.out.println("exception");
+                }
+            }
+
+            if(input.equals("chrome")){
+
+                try {
+                    Stage stage = new Stage();
+                    stage.setTitle("Google Chrome");
+                    WebView browser = new WebView();
+                    WebEngine webEngine = browser.getEngine();
+                    webEngine.load("https://www.google.com");
+                    VBox root = new VBox();
+                    root.getChildren().addAll(browser);
+
+                    Scene scene = new Scene(root, 800, 500);
+                    stage.setScene(scene);
+
+                    stage.show();
+                } catch (Exception e){
+                    System.out.println("No internet connection");
+                }
+            }
         }
+
+
 
     }
 
-    public void onNewDirectory(){
+
+
+    public void onCutFile(){
+        String input = listView2.getSelectionModel().getSelectedItem();
+        String output = game.processCommand("cut " + input );
+        System.out.println(output);
+    }
+
+    public void onPasteFile(){
+
+        listView2.getItems().addAll(game.getClipboard().getFiles().keySet());
+        String item = game.processCommand("clipboard");
+        game.processCommand("paste"+item);
+
+    }
+
+    public void onNewDirectory() {
         game.processCommand("mkdir new_directory");
     }
 
-    public void onShowFiles(){
+    public void onShowFiles() {
         String output = game.processCommand("ls");
         textArea.setText(output);
     }
 
-    public void onShowClipboard(){
+    public void onShowClipboard() {
         String output = game.processCommand("clipboard");
+        textArea.setText(output);
+    }
+
+    public void onCheckBrowser(){
+        String output = game.processCommand("check");
         textArea.setText(output);
     }
 
