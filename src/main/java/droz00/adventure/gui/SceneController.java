@@ -116,6 +116,7 @@ public class SceneController implements Initializable {
         listView1.getItems().clear();
         listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
         listView1.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
+
         listView2.getItems().clear();
         listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
     }
@@ -143,9 +144,6 @@ public class SceneController implements Initializable {
 
     public void onNewGame() {
         game = new Game();
-
-
-
         textArea.setText(game.getWelcomeMessage());
 
         game.onRoomChange(this::onRoomChange);
@@ -155,6 +153,8 @@ public class SceneController implements Initializable {
         game.onPaste(this::onRoomChange);
         game.onCurrentPlaceObs(this::onPlaceChange);
         label.setText("Files in " + game.getCurrentPlace().getName());
+        listView1.getItems().clear();
+        listView2.getItems().clear();
         listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
         listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
 
@@ -220,7 +220,7 @@ public class SceneController implements Initializable {
             String input = listView1.getSelectionModel().getSelectedItem();
             String output = game.processCommand("cd " + input);
             textArea.appendText("\n" + output);
-            if(input.equals("safari")){
+            if (input.equals("safari")) {
 
                 try {
                     Stage stage = new Stage();
@@ -235,12 +235,12 @@ public class SceneController implements Initializable {
                     stage.setScene(scene);
 
                     stage.show();
-                } catch (Exception e){
+                } catch (Exception e) {
                     System.out.println("exception");
                 }
             }
 
-            if(input.equals("chrome")){
+            if (input.equals("chrome")) {
 
                 try {
                     Stage stage = new Stage();
@@ -255,30 +255,42 @@ public class SceneController implements Initializable {
                     stage.setScene(scene);
 
                     stage.show();
-                } catch (Exception e){
+                } catch (Exception e) {
                     System.out.println("No internet connection");
                 }
             }
         }
 
 
-
     }
 
 
-
-    public void onCutFile(){
+    public void onCutFile() {
         String input = listView2.getSelectionModel().getSelectedItem();
-        String output = game.processCommand("cut " + input );
+        String output = game.processCommand("cut " + input);
         System.out.println(output);
     }
 
-    public void onPasteFile(){
+    public void onPasteFile() {
 
         listView2.getItems().addAll(game.getClipboard().getFiles().keySet());
         String item = game.processCommand("clipboard");
-        game.processCommand("paste"+item);
+        game.processCommand("paste" + item);
 
+    }
+
+    public void onDeleteDirectory() {
+        String input = listView1.getSelectionModel().getSelectedItem();
+        String output = game.processCommand("rmdir " + input);
+        if (!output.equals("Directory not found")) {
+            textArea.appendText("\n" + output );
+
+        if(!output.equals("Directory contains other directories. Cannot be deleted")){
+            textArea.appendText("\n" + output );
+        }
+        } else {
+            textArea.appendText("\n" + input + " cannot be deleted");
+        }
     }
 
     public void onNewDirectory() {
@@ -287,7 +299,7 @@ public class SceneController implements Initializable {
 
     public void onShowFiles() {
         String output = game.processCommand("ls");
-        textArea.appendText("\n"+output);
+        textArea.appendText("\n" + output);
     }
 
     public void onShowClipboard() {
@@ -296,13 +308,13 @@ public class SceneController implements Initializable {
 
     }
 
-    public void onUndo(){
-        if (game.getPreviousPlaces().size()>1) {
+    public void onUndo() {
+        if (game.getPreviousPlaces().size() > 1) {
             String place = game.getPreviousPlace();
             game.processCommand("cd " + place);
 
             System.out.println(game.getPreviousPlaces());
-            textArea.appendText("\nBack to "+ place);
+            textArea.appendText("\nBack to " + place);
         } else {
             textArea.appendText("\nNo more undo");
             System.out.println(game.getPreviousPlaces());
@@ -310,11 +322,10 @@ public class SceneController implements Initializable {
 
     }
 
-    public void onCheckBrowser(){
+    public void onCheckBrowser() {
         String output = game.processCommand("check");
-        textArea.appendText("\n"+output);
+        textArea.appendText("\n" + output);
     }
-
 
 
 }

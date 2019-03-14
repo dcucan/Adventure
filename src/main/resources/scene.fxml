@@ -36,6 +36,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#onUndo" text="&lt;-" />
                   <MenuItem mnemonicParsing="false" onAction="#onNewGame" text="New game" />
                   <MenuItem mnemonicParsing="false" onAction="#onNewDirectory" text="New directory" />
+                  <MenuItem mnemonicParsing="false" onAction="#onDeleteDirectory" text="Delete directory" />
                   <MenuItem mnemonicParsing="false" onAction="#onShowClipboard" text="Show Clipboard" />
                   <MenuItem mnemonicParsing="false" onAction="#onShowFiles" text="Show files" />
                   <MenuItem mnemonicParsing="false" onAction="#onCheckBrowser" text="Check browser" />
