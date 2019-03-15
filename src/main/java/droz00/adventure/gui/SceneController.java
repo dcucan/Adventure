@@ -41,6 +41,9 @@ public class SceneController implements Initializable {
     @FXML
     private WebView html;
 
+    @FXML
+    private ImageView fileShow;
+
 
     @FXML
     private Image imageF = new Image("/image/folder.png");
@@ -50,6 +53,12 @@ public class SceneController implements Initializable {
     private Image imageMacos = new Image("/image/macos.png");
     private Image imageWindows = new Image("/image/windows.png");
     private Image imageFile = new Image("/image/file.png");
+    private Image imageMe = new Image("/image/me.png");
+    private Image imagePrague = new Image("/image/prague.png");
+    private Image imagepdf = new Image("/image/pdf.png");
+    private Image imageXml = new Image("/image/xml.png");
+    private Image imageScreenshot = new Image("/image/screenshot.png");
+    private Image imageForSale = new Image("/image/forsale.png");
     private Image[] listOfImages = {imageF, imageSafari, imageFinder, imageChrome, imageMacos, imageWindows, imageFile};
 
 
@@ -110,6 +119,7 @@ public class SceneController implements Initializable {
 
     public void onPlaceChange() {
         label.setText("Files in " + game.getCurrentPlace().getName());
+        fileShow.setImage(null);
     }
 
     public void onRoomChange() {
@@ -119,6 +129,7 @@ public class SceneController implements Initializable {
 
         listView2.getItems().clear();
         listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
+        fileShow.setImage(null);
     }
 
 
@@ -133,6 +144,7 @@ public class SceneController implements Initializable {
         textArea.appendText("\n");
         textArea.appendText(input + "\n");
         textArea.appendText(output);
+        fileShow.setImage(null);
 
 
     }
@@ -159,6 +171,7 @@ public class SceneController implements Initializable {
         listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
 
         setImage();
+        fileShow.setImage(null);
     }
 
     public void onClose() {
@@ -212,11 +225,35 @@ public class SceneController implements Initializable {
 
     }
 
+    public void onFile(javafx.scene.input.MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2) {
+
+            String input = listView2.getSelectionModel().getSelectedItem();
+
+
+            if (input.contains("me.jpg")) {
+                fileShow.setImage(imageMe);
+            } else if (input.contains("forsale")) {
+                fileShow.setImage(imageForSale);
+            } else if (input.contains(".xml")) {
+                fileShow.setImage(imageXml);
+            } else if (input.contains("prague.jpg")) {
+                fileShow.setImage(imagePrague);
+            } else if (input.contains("pdf")) {
+                fileShow.setImage(imagepdf);
+            } else if (input.contains("screen")) {
+                fileShow.setImage(imageScreenshot);
+
+            } else if(input.length()>1){fileShow.setImage(imageFile);}
+
+        }
+    }
 
     public void clickOnDirectory(javafx.scene.input.MouseEvent mouseEvent) {
 
 
         if (mouseEvent.getClickCount() == 2) {
+            fileShow.setImage(null);
             String input = listView1.getSelectionModel().getSelectedItem();
             String output = game.processCommand("cd " + input);
             textArea.appendText("\n" + output);
@@ -269,6 +306,7 @@ public class SceneController implements Initializable {
         String input = listView2.getSelectionModel().getSelectedItem();
         String output = game.processCommand("cut " + input);
         System.out.println(output);
+        fileShow.setImage(null);
     }
 
     public void onPasteFile() {
@@ -276,39 +314,46 @@ public class SceneController implements Initializable {
         listView2.getItems().addAll(game.getClipboard().getFiles().keySet());
         String item = game.processCommand("clipboard");
         game.processCommand("paste" + item);
+        fileShow.setImage(null);
 
     }
 
     public void onDeleteDirectory() {
         String input = listView1.getSelectionModel().getSelectedItem();
         String output = game.processCommand("rmdir " + input);
+        fileShow.setImage(null);
         if (!output.equals("Directory not found")) {
-            textArea.appendText("\n" + output );
+            textArea.appendText("\n" + output);
 
-        if(!output.equals("Directory contains other directories. Cannot be deleted")){
-            textArea.appendText("\n" + output );
-        }
+            if (!output.equals("Directory contains other directories. Cannot be deleted")) {
+                textArea.appendText("\n" + output);
+            }
         } else {
             textArea.appendText("\n" + input + " cannot be deleted");
         }
+
     }
 
     public void onNewDirectory() {
         game.processCommand("mkdir new_directory");
+        fileShow.setImage(null);
     }
 
     public void onShowFiles() {
         String output = game.processCommand("ls");
         textArea.appendText("\n" + output);
+        fileShow.setImage(null);
     }
 
     public void onShowClipboard() {
         String output = game.processCommand("clipboard");
         textArea.setText(output);
+        fileShow.setImage(null);
 
     }
 
     public void onUndo() {
+        fileShow.setImage(null);
         if (game.getPreviousPlaces().size() > 1) {
             String place = game.getPreviousPlace();
             game.processCommand("cd " + place);
@@ -323,6 +368,7 @@ public class SceneController implements Initializable {
     }
 
     public void onCheckBrowser() {
+        fileShow.setImage(null);
         String output = game.processCommand("check");
         textArea.appendText("\n" + output);
     }

@@ -1,5 +1,6 @@
 package droz00.adventure;
 
+import droz00.adventure.gui.SceneController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,9 +29,16 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/scene.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/scene.fxml"));
+        Parent root = loader.load();
+        //TODO MainSceneLoader
+
+        //SceneController controller = loader.getController();
+        //controller.initialize();
         Scene scene = new Scene(root, 720, 500);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("MacHack");
         primaryStage.show();
     }
 }
