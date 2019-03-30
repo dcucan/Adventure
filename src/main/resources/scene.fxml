@@ -44,6 +44,11 @@
               <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Map">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#onShowMap" text="Show map" />
+              </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#onCutFile" text="Cut" />

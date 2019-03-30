@@ -3,6 +3,7 @@ package droz00.adventure.places;
 import droz00.adventure.Game;
 import droz00.adventure.files.File;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +48,7 @@ public class PlaceManager {
         registerPlace(safari);
         registerPlace(chrome);
         registerPlace(newDirectory);
+        registerPlace(trash);
 
         // sets neighbors
         setNeighbors(macos,safari);
@@ -108,6 +110,10 @@ public class PlaceManager {
     public void setNeighbors(Place a, Place b) {
         a.addNeighbor(b);
         b.addNeighbor(a);
+    }
+
+    public Collection<Place> getPlaces(){
+        return placeMap.values();
     }
 
 

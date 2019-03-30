@@ -4,21 +4,18 @@ package droz00.adventure.gui;
 import droz00.adventure.Game;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class SceneController implements Initializable {
+public class SceneController {
 
     private Game game;
 
@@ -44,6 +41,9 @@ public class SceneController implements Initializable {
     @FXML
     private ImageView fileShow;
 
+    private ImageView mapImageView;
+
+    private Stage mapStage;
 
     @FXML
     private Image imageF = new Image("/image/folder.png");
@@ -61,11 +61,12 @@ public class SceneController implements Initializable {
     private Image imageForSale = new Image("/image/forsale.png");
     private Image[] listOfImages = {imageF, imageSafari, imageFinder, imageChrome, imageMacos, imageWindows, imageFile};
 
+    private MapGenerator mapGenerator;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize() {
         game = new Game();
         textArea.setText(game.getWelcomeMessage());
+        mapGenerator = new MapGenerator(game);
 
         game.onRoomChange(this::onRoomChange);
         game.onAddNeighbor(this::onRoomChange);
@@ -77,45 +78,12 @@ public class SceneController implements Initializable {
         listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
         listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
 
-        setImage();
+        DirectoryImageManager directoryImageManager = new DirectoryImageManager();
+        directoryImageManager.setDirectoryImage(listView1);
 
     }
 
 
-    public void setImage() {
-        listView1.setCellFactory(param -> new ListCell<String>() {
-            private ImageView imageView = new ImageView();
-
-            @Override
-            public void updateItem(String name, boolean empty) {
-                super.updateItem(name, empty);
-                if (empty) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    if (name.equals("safari"))
-                        imageView.setImage(listOfImages[1]);
-                    else if (name.equals("chrome"))
-                        imageView.setImage(listOfImages[3]);
-                    else if (name.equals("finder"))
-                        imageView.setImage(listOfImages[2]);
-                    else if (name.equals("macos"))
-                        imageView.setImage(listOfImages[4]);
-                    else if (name.equals("windows"))
-                        imageView.setImage(listOfImages[5]);
-                    else if (name.contains(".jpg"))
-                        imageView.setImage(listOfImages[6]);
-                    else if (name.length() > 1)
-                        imageView.setImage(listOfImages[0]);
-
-                    setText(name);
-                    setGraphic(imageView);
-                }
-
-            }
-        });
-
-    }
 
     public void onPlaceChange() {
         label.setText("Files in " + game.getCurrentPlace().getName());
@@ -130,6 +98,9 @@ public class SceneController implements Initializable {
         listView2.getItems().clear();
         listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
         fileShow.setImage(null);
+
+        Image map = mapGenerator.toImage();
+        mapImageView.setImage(map);
     }
 
 
@@ -155,23 +126,9 @@ public class SceneController implements Initializable {
 
 
     public void onNewGame() {
-        game = new Game();
-        textArea.setText(game.getWelcomeMessage());
+        initialize();
 
-        game.onRoomChange(this::onRoomChange);
-        game.onAddNeighbor(this::onRoomChange);
-        game.onRmDirNeighbor(this::onRoomChange);
-        game.onCut(this::onRoomChange);
-        game.onPaste(this::onRoomChange);
-        game.onCurrentPlaceObs(this::onPlaceChange);
-        label.setText("Files in " + game.getCurrentPlace().getName());
-        listView1.getItems().clear();
-        listView2.getItems().clear();
-        listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
-        listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
-
-        setImage();
-        fileShow.setImage(null);
+        mapStage.close();
     }
 
     public void onClose() {
@@ -371,6 +328,18 @@ public class SceneController implements Initializable {
         fileShow.setImage(null);
         String output = game.processCommand("check");
         textArea.appendText("\n" + output);
+    }
+
+    public void onShowMap(){
+        mapStage = new Stage();
+        Pane pane = new Pane();
+        mapImageView = new ImageView();
+        Image image = mapGenerator.toImage();
+        mapImageView.setImage(image);
+        pane.getChildren().add(mapImageView);
+        Scene scene = new Scene(pane, 720,540);
+        mapStage.setScene(scene);
+        mapStage.show();
     }
 
 

@@ -1,7 +1,7 @@
 package droz00.adventure;
 
-import droz00.adventure.gui.SceneController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -40,6 +40,10 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("MacHack");
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(event -> {
+            Platform.exit();
+        });
     }
 }
 
