@@ -5,9 +5,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Shows image with text of a directory and file in a listview
+ */
 public class DirectoryImageManager {
 
-    private ListView<String> listView;
 
     private Image imageF = new Image("/image/folder.png");
     private Image imageSafari = new Image("/image/safari.png");
@@ -20,7 +22,10 @@ public class DirectoryImageManager {
     private Image[] listOfImages = {imageF, imageSafari, imageFinder, imageChrome, imageMacos, imageWindows, imageFile};
 
 
-
+    /**
+     * Sets the image of a directory in a listview
+     * @param listView
+     */
     public void setDirectoryImage(ListView<String> listView) {
         listView.setCellFactory(param -> new ListCell<String>() {
             private ImageView imageView = new ImageView();

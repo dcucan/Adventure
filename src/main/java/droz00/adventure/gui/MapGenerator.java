@@ -19,7 +19,9 @@ import guru.nidi.graphviz.model.Graph;
 import guru.nidi.graphviz.model.Link;
 import javafx.scene.image.Image;
 
-
+/**
+ * Generates a map of places, shows the current place
+ */
 public class MapGenerator {
 
 
@@ -28,10 +30,15 @@ public class MapGenerator {
 
     private Graph graph;
 
+
     public MapGenerator(Game game){
         this.game = game;
     }
 
+    /**
+     * Generates the map
+     * @return
+     */
     public MapGenerator generate() {
         graph = graph("map").graphAttr().with(RankDir.LEFT_TO_RIGHT);
 
@@ -57,6 +64,7 @@ public class MapGenerator {
         return this;
     }
 
+
     public InputStream toInputStream() {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
@@ -72,6 +80,10 @@ public class MapGenerator {
         return new ByteArrayInputStream(bytes);
     }
 
+    /**
+     * To image
+     * @return
+     */
     public Image toImage(){
         return new Image(generate().toInputStream());
     }

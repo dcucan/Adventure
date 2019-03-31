@@ -15,6 +15,9 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
+/**
+ * Main controller for GUI
+ */
 public class SceneController {
 
     private Game game;
@@ -63,6 +66,9 @@ public class SceneController {
 
     private MapGenerator mapGenerator;
 
+    /**
+     * Set up the first scene
+     */
     public void initialize() {
         game = new Game();
         textArea.setText(game.getWelcomeMessage());
@@ -84,12 +90,17 @@ public class SceneController {
     }
 
 
-
+    /**
+     * Sets image of file to null
+     */
     public void onPlaceChange() {
         label.setText("Files in " + game.getCurrentPlace().getName());
         fileShow.setImage(null);
     }
 
+    /**
+     * When place
+     */
     public void onRoomChange() {
         listView1.getItems().clear();
         listView1.getItems().addAll(game.getCurrentPlace().getNeighbors().keySet());
@@ -99,11 +110,16 @@ public class SceneController {
         listView2.getItems().addAll(game.getCurrentPlace().getFiles().keySet());
         fileShow.setImage(null);
 
-        Image map = mapGenerator.toImage();
-        mapImageView.setImage(map);
+        if (mapImageView != null) {
+            Image map = mapGenerator.toImage();
+            mapImageView.setImage(map);
+        }
+
     }
 
-
+    /**
+     * Process command on button click
+     */
     public void onButtonClick() {
         String input = textField.getText();
 
@@ -120,12 +136,21 @@ public class SceneController {
 
     }
 
+    /**
+     * Typing enter
+     */
     public void onTextFieldAction() {
         onButtonClick();
     }
 
 
+    /**
+     * Click on new game menu item
+     */
     public void onNewGame() {
+        listView1.getItems().clear();
+        listView2.getItems().clear();
+
         initialize();
 
         mapStage.close();
@@ -135,6 +160,9 @@ public class SceneController {
         Platform.exit();
     }
 
+    /**
+     * Click on help menu item
+     */
     public void onHelp() {
 
         StringBuilder sb = new StringBuilder();
@@ -182,6 +210,10 @@ public class SceneController {
 
     }
 
+    /**
+     * When double click on file -> shows the picture of the file
+     * @param mouseEvent
+     */
     public void onFile(javafx.scene.input.MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
 
@@ -201,11 +233,17 @@ public class SceneController {
             } else if (input.contains("screen")) {
                 fileShow.setImage(imageScreenshot);
 
-            } else if(input.length()>1){fileShow.setImage(imageFile);}
+            } else if (input.length() > 1) {
+                fileShow.setImage(imageFile);
+            }
 
         }
     }
 
+    /**
+     * When click on directory -> go to that directory
+     * @param mouseEvent
+     */
     public void clickOnDirectory(javafx.scene.input.MouseEvent mouseEvent) {
 
 
@@ -259,6 +297,9 @@ public class SceneController {
     }
 
 
+    /**
+     * Click on cut menu item -> cuts the file
+     */
     public void onCutFile() {
         String input = listView2.getSelectionModel().getSelectedItem();
         String output = game.processCommand("cut " + input);
@@ -266,6 +307,9 @@ public class SceneController {
         fileShow.setImage(null);
     }
 
+    /**
+     * Click on paste file meni item -> paste the file
+     */
     public void onPasteFile() {
 
         listView2.getItems().addAll(game.getClipboard().getFiles().keySet());
@@ -275,6 +319,9 @@ public class SceneController {
 
     }
 
+    /**
+     * Click on delete directory menu item -> deletes the selected directory
+     */
     public void onDeleteDirectory() {
         String input = listView1.getSelectionModel().getSelectedItem();
         String output = game.processCommand("rmdir " + input);
@@ -291,17 +338,26 @@ public class SceneController {
 
     }
 
+    /**
+     * Click on new directory menu item -> creates new directory
+     */
     public void onNewDirectory() {
         game.processCommand("mkdir new_directory");
         fileShow.setImage(null);
     }
 
+    /**
+     * Click on show file -> shows files and directories
+     */
     public void onShowFiles() {
         String output = game.processCommand("ls");
         textArea.appendText("\n" + output);
         fileShow.setImage(null);
     }
 
+    /**
+     * Click on show clipboard menu item -> shows files in clipboard
+     */
     public void onShowClipboard() {
         String output = game.processCommand("clipboard");
         textArea.setText(output);
@@ -309,6 +365,9 @@ public class SceneController {
 
     }
 
+    /**
+     * Goes back to the previous place
+     */
     public void onUndo() {
         fileShow.setImage(null);
         if (game.getPreviousPlaces().size() > 1) {
@@ -324,20 +383,26 @@ public class SceneController {
 
     }
 
+    /**
+     * Checks the browser
+     */
     public void onCheckBrowser() {
         fileShow.setImage(null);
         String output = game.processCommand("check");
         textArea.appendText("\n" + output);
     }
 
-    public void onShowMap(){
+    /**
+     * Shows the map in a new window
+     */
+    public void onShowMap() {
         mapStage = new Stage();
         Pane pane = new Pane();
         mapImageView = new ImageView();
         Image image = mapGenerator.toImage();
         mapImageView.setImage(image);
         pane.getChildren().add(mapImageView);
-        Scene scene = new Scene(pane, 720,540);
+        Scene scene = new Scene(pane, 720, 540);
         mapStage.setScene(scene);
         mapStage.show();
     }
